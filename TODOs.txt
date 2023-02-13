@@ -1,0 +1,3 @@
+TODOs:
+- Ajuste fino no tempo de espera da função clica_pedido_individual para que nenhum pedido deixe de carregar (site está bugando se vai muito rápido)
+- Parsear json de resultado para um csv - a ser utilizado no envio dos pedidos, envio para produção dos produtos, etc
