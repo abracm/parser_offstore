@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
 import json
 import os
 import time
@@ -13,7 +12,7 @@ def get_driver():
     caps['goog:loggingPrefs'] = {'performance': 'ALL'}
     
     options = webdriver.ChromeOptions()
-    #options.add_argument('--headless')
+    options.add_argument('--headless')
     if os.path.exists("chromedriver.exe"):
         service = Service(executable_path="chromedriver.exe")
         return webdriver.Chrome(options=options, service=service, desired_capabilities=caps)
@@ -68,7 +67,8 @@ def clica_pedido_individual(driver, tag_atual):
     time.sleep(1.5)
     elemento.click()
     driver.implicitly_wait(3)
-    driver.find_element(By.XPATH, '//*[@id="root"]/div[7]/div/div[2]/div/div/div/div[2]/div').click()
+    elemento = driver.find_element(By.XPATH, '//*[@id="root"]/div[7]/div/div[2]/div/div/div/div[2]/div')
+    driver.execute_script("arguments[0].click();", elemento)
     time.sleep(0.2)
     driver.execute_script("arguments[0].scrollIntoView();", driver.find_element(By.CLASS_NAME, "infinite-scroll-component ")\
                           .find_elements(By.TAG_NAME, "div")[tag_atual])
