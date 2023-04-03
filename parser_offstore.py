@@ -6,6 +6,7 @@ import json
 import os
 import time
 import requests
+from bs4 import BeautifulSoup as BS
 
 def get_driver():
     caps = DesiredCapabilities.CHROME
@@ -64,12 +65,16 @@ def clica_pedido_individual(driver, tag_atual):
     if elemento.get_attribute("class") not in ["sc-fyjhYU KSoWN", "sc-fyjhYU bWlhg"]:
         return
     print(elemento.get_attribute("innerHTML"))
-    time.sleep(1.5)
+    html = BS(elemento.get_attribute("innerHTML"), "lxml")
+    if html.find("span", "date-viewed") is not None:
+        if html.find("span", "date-viewed").contents[0] == "25 de agosto de 2022  às 08:58h":
+            raise IndexError
+    time.sleep(3)
     elemento.click()
     driver.implicitly_wait(3)
     elemento = driver.find_element(By.XPATH, '//*[@id="root"]/div[7]/div/div[2]/div/div/div/div[2]/div')
     driver.execute_script("arguments[0].click();", elemento)
-    time.sleep(0.2)
+    time.sleep(1)
     driver.execute_script("arguments[0].scrollIntoView();", driver.find_element(By.CLASS_NAME, "infinite-scroll-component ")\
                           .find_elements(By.TAG_NAME, "div")[tag_atual])
     
